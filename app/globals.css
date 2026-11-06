@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
+/* Cores por função. As das categorias passaram no validador de daltonismo
+   (ordem fixa: a cor acompanha a categoria em toda a tela). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  color-scheme: light dark;
+  --plano: #f6f6f3;
+  --superficie: #ffffff;
+  --tinta: #0b0b0b;
+  --tinta-2: #52514e;
+  --tinta-3: #898781;
+  --linha: rgba(11, 11, 11, 0.1);
+  --grade: #e1e0d9;
+  --eixo: #c3c2b7;
+  --trilho: #eeede8;
+  --acento: #6250d6;
+  --cat-1: #2a78d6;
+  --cat-2: #eb6834;
+  --cat-3: #1baf7a;
+  --cat-4: #eda100;
+  --bom: #0ca30c;
+  --atencao: #fab219;
+  --critico: #d03b3b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --plano: #0d0d0d;
+    --superficie: #1a1a19;
+    --tinta: #f0efec;
+    --tinta-2: #c3c2b7;
+    --tinta-3: #898781;
+    --linha: rgba(255, 255, 255, 0.1);
+    --grade: #2c2c2a;
+    --eixo: #383835;
+    --trilho: #262624;
+    --acento: #9085e9;
+    --cat-1: #3987e5;
+    --cat-2: #d95926;
+    --cat-3: #199e70;
+    --cat-4: #c98500;
   }
 }
 
+@theme inline {
+  --color-plano: var(--plano);
+  --color-superficie: var(--superficie);
+  --color-tinta: var(--tinta);
+  --color-tinta-2: var(--tinta-2);
+  --color-tinta-3: var(--tinta-3);
+  --color-linha: var(--linha);
+  --color-grade: var(--grade);
+  --color-trilho: var(--trilho);
+  --color-acento: var(--acento);
+  --color-bom: var(--bom);
+  --color-atencao: var(--atencao);
+  --color-critico: var(--critico);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme {
+  --animate-entrar: entrar 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  @keyframes entrar {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--plano);
+  color: var(--tinta);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

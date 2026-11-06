@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Minhas Finanças
 
-## Getting Started
+Controle pessoal mês a mês: recebimentos (5º dia útil e dia 20), contas por tipo, quanto sobra, relatórios e uma sugestão de quanto investir.
 
-First, run the development server:
+Cada conta e cada recebimento pertencem a um mês. O seletor no topo troca o mês exibido. No cadastro dá para escolher o mês de pagamento, lançar um empréstimo parcelado ("parcela 5 de 24" vira uma conta por mês) e os valores já comprometidos do cartão nos meses seguintes. "Copiar para …" leva ao mês seguinte as contas que se repetem (sem parcelas e sem duplicar o que já existe), todas a pagar, e os recebimentos.
+
+Os dados ficam num banco SQLite no servidor, então o computador e o celular veem as mesmas informações. Cada pessoa entra com usuário e senha ("Cadastre-se" na tela de entrada) e vê só os próprios dados. As contas cadastradas antes de existir login ficaram com a primeira conta criada.
+
+## Rodar localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra <http://localhost:3000>. O banco local é criado em `dados/minhasfinancas.db` (fora do git).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estrutura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/api/*`: rotas que leem e gravam no banco (`lib/servidor/banco.ts`).
+- `lib/cliente.ts`: estado da tela; mostra cada alteração na hora e confirma no servidor.
+- `lib/calculos.ts`: totais, relatórios e a sugestão de investimento.
+- `components/`: as seções da página.
 
-## Learn More
+## Publicar na VM da Magalu Cloud
 
-To learn more about Next.js, take a look at the following resources:
+Pré-requisitos: VM Ubuntu 24.04 com IPv4 público, chave SSH cadastrada e as portas 22 e 80 liberadas no security group.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Uma vez, para preparar a VM (Node, nginx, swap, pasta do banco e serviço):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+ssh ubuntu@IP_DA_VM 'bash -s' < deploy/setup-vm.sh
+```
 
-## Deploy on Vercel
+A cada nova versão:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+./deploy/deploy.sh ubuntu@IP_DA_VM
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O app fica em `http://IP_DA_VM`. O banco fica em `/var/lib/minhasfinancas/minhasfinancas.db` e não é tocado pelo deploy.

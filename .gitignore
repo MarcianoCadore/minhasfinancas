@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# banco SQLite local (em produção fica em /var/lib/minhasfinancas)
+/dados
